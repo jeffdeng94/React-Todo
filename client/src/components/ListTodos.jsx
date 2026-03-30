@@ -16,9 +16,12 @@ const ListTodos = () => {
 
   const { actions = [] } = todos;
 
+  // Sort alphabetically by action text
+  const sortedActions = [...actions].sort((a, b) => a.action.localeCompare(b.action));
+
   return (
     <>
-      {actions.map((act) => (
+      {sortedActions.map((act) => (
         <TodoItem key={act._id} id={act._id} text={act.action} />
       ))}
     </>
