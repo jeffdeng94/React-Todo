@@ -22,7 +22,7 @@ const ListTodos = () => {
   return (
     <>
       {sortedActions.map((act) => (
-        <TodoItem key={act._id} id={act._id} text={act.action} />
+        <TodoItem key={act._id} todo={act} />
       ))}
     </>
   );

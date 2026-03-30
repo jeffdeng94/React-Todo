@@ -13,9 +13,11 @@ const app = express();
 //connect to database
 
 mongoose
-  .connect(process.env.DB, { useNewUrlParser: true })
+  .connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Database connected'))
   .catch((err) => console.log(err));
+// ✅ Add this line to avoid findOneAndUpdate deprecation warning
+mongoose.set('useFindAndModify', false);
 
 app.use(bodyParser.json());
 app.use('/api', routes);

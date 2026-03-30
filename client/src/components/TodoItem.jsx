@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { delete_action } from '../actions/index.js';
+import { delete_action, update_action } from '../actions/index.js';
 
 const ItemWrapper = styled.div`
   width: 80%;
@@ -19,7 +19,9 @@ const StyledCheckbox = styled.input`
 const StyledText = styled.p`
   margin: 8px;
   color: #fff;
-  width: 90%;
+  width: 80%;
+  text-decoration: ${(props) => (props.completed ? 'line-through' : 'none')};
+  opacity: ${(props) => (props.completed ? 0.7 : 1)};
 `;
 
 const StyledButton = styled.button`
@@ -31,17 +33,23 @@ const StyledButton = styled.button`
   margin-left: 10px;
 `;
 
-const TodoItem = ({ id, text }) => {
+const TodoItem = ({ todo }) => {
   const dispatch = useDispatch();
+  const { _id: id, action: text, completed } = todo;
 
   const onDeleteClicked = (id) => {
     dispatch(delete_action(id)); // ✅ modern way
   };
 
+  const onToggleCompleted = () => {
+    // toggle the completed flag
+    dispatch(update_action({ ...todo, completed: !completed }));
+  };
+
   return (
     <ItemWrapper>
-      <StyledCheckbox type="checkbox" />
-      <StyledText>{text}</StyledText>
+      <StyledText completed={completed}>{text}</StyledText>
+      <StyledButton onClick={onToggleCompleted}> {completed ? 'Unmark' : 'Mark As Complete'}</StyledButton>
       <StyledButton onClick={() => onDeleteClicked(id)}>Delete</StyledButton>
     </ItemWrapper>
   );
