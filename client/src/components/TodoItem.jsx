@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { delete_action } from '../actions/index';
+import { useDispatch } from 'react-redux';
+import { delete_action } from '../actions/index.js';
 
 const ItemWrapper = styled.div`
   width: 80%;
@@ -31,18 +31,20 @@ const StyledButton = styled.button`
   margin-left: 10px;
 `;
 
-const TodoItem = ({ id, text, delete_action }) => {
+const TodoItem = ({ id, text }) => {
+  const dispatch = useDispatch();
+
+  const onDeleteClicked = (id) => {
+    dispatch(delete_action(id)); // ✅ modern way
+  };
+
   return (
     <ItemWrapper>
       <StyledCheckbox type="checkbox" />
       <StyledText>{text}</StyledText>
-      <StyledButton onClick={() => delete_action(id)}>Delete</StyledButton>
+      <StyledButton onClick={() => onDeleteClicked(id)}>Delete</StyledButton>
     </ItemWrapper>
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  delete_action: (id) => dispatch(delete_action(id))
-});
-
-export default connect(null, mapDispatchToProps)(TodoItem);
+export default TodoItem;

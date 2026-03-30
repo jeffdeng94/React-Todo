@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { add_action } from '../actions/index';
 
@@ -25,8 +25,11 @@ const StyledButton = styled.button`
   margin-left: 10px;
 `;
 
-const AddTodos = ({ add_action }) => {
+const AddTodos = () => {
   const [text, setText] = useState('');
+
+  // 📤 dispatch (like @Output)
+  const dispatch = useDispatch();
   // ✅ proper function declaration
   const handleChange = (e) => {
     setText(e.target.value);
@@ -36,7 +39,7 @@ const AddTodos = ({ add_action }) => {
 
     if (!text.trim()) return; // optional safety
 
-    add_action(text);
+    dispatch(add_action(text)); // ✅ modern way
     setText('');
   };
 
@@ -48,8 +51,4 @@ const AddTodos = ({ add_action }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  add_action: (text) => dispatch(add_action(text))
-});
-
-export default connect(null, mapDispatchToProps)(AddTodos);
+export default AddTodos;

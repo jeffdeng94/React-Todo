@@ -1,15 +1,20 @@
 import { useEffect } from 'react';
 import TodoItem from './TodoItem';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { fetch_actions } from '../actions/index.js';
 
-const ListTodos = ({ todos, fetchActions }) => {
-  useEffect(() => {
-    fetchActions();
-  }, [fetchActions]);
+const ListTodos = () => {
+  // 📥 get data from Redux (like @Input)
+  const todos = useSelector((state) => state.todos);
 
-  const { actions } = todos;
+  // 📤 dispatch actions (like @Output)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetch_actions());
+  }, [dispatch]);
+
+  const { actions = [] } = todos;
 
   return (
     <>
@@ -20,10 +25,4 @@ const ListTodos = ({ todos, fetchActions }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  todos: state.todos
-});
-
-const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchActions: fetch_actions }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(ListTodos);
+export default ListTodos;
